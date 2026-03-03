@@ -1,4 +1,4 @@
-const HF_TOKEN = "PUT_YOUR_HF_TOKEN_HERE"; // ← اینجا توکن خودتو بذار
+const HF_TOKEN = "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"; // ← اینجا توکن خودتو بذار
 
 export async function enhanceToNotes(text: string, lang: "fa" | "en") {
   const model = "google/flan-t5-base";
