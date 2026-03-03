@@ -1,8 +1,5 @@
-const HF_TOKEN = "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"; // ← اینجا توکن خودتو بذار
-
+const OPENROUTER_API_KEY = "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";
 export async function enhanceToNotes(text: string, lang: "fa" | "en") {
-  const model = "google/flan-t5-base";
-
   const prompt =
     lang === "fa"
       ? `متن زیر را به یک جزوه تمیز تبدیل کن.
@@ -22,23 +19,26 @@ ${text}`
 Text:
 ${text}`;
 
-  const response = await fetch(
-    `https://api-inference.huggingface.co/models/${model}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${HF_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 512,
-          temperature: 0.2,
-        },
-      }),
-    }
-  );
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+      "HTTP-Referer": "https://hesamhadadi.github.io/",
+      "X-Title": "Speech To Text Notes App"
+    },
+    body: JSON.stringify({
+      model: "mistralai/mistral-7b-instruct",
+      messages: [
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.3,
+      max_tokens: 800
+    })
+  });
 
   if (!response.ok) {
     throw new Error("AI request failed");
@@ -46,10 +46,5 @@ ${text}`;
 
   const data = await response.json();
 
-  const generated =
-    Array.isArray(data) && data[0]?.generated_text
-      ? data[0].generated_text
-      : data.generated_text;
-
-  return generated?.trim() || "";
+  return data.choices?.[0]?.message?.content || "";
 }
