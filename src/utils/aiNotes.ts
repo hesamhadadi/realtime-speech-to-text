@@ -1,4 +1,5 @@
 const OPENROUTER_API_KEY = "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";
+
 export async function enhanceToNotes(text: string, lang: "fa" | "en") {
   const prompt =
     lang === "fa"
@@ -22,29 +23,26 @@ ${text}`;
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-      "HTTP-Referer": "https://hesamhadadi.github.io/",
-      "X-Title": "Speech To Text Notes App"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "mistralai/mistral-7b-instruct",
+      model: "openrouter/auto",
       messages: [
         {
           role: "user",
           content: prompt
         }
-      ],
-      temperature: 0.3,
-      max_tokens: 800
+      ]
     })
   });
 
-  if (!response.ok) {
-    throw new Error("AI request failed");
-  }
-
   const data = await response.json();
+
+  if (!response.ok) {
+    console.error(data);
+    throw new Error(data?.error?.message || "AI request failed");
+  }
 
   return data.choices?.[0]?.message?.content || "";
 }
