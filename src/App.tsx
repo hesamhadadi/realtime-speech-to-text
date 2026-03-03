@@ -20,7 +20,9 @@ export default function App() {
   const [aiLoading, setAiLoading] = useState(false);
   const [lang, setLang] = useState<"fa-IR" | "en-US">("fa-IR");
   const [isListening, setIsListening] = useState(false);
-
+  const [apiKey, setApiKey] = useState(
+    () => localStorage.getItem("OR_KEY") || ""
+  );
   const [finalText, setFinalText] = useState("");
   const [interimText, setInterimText] = useState("");
 
@@ -80,24 +82,26 @@ export default function App() {
     };
   }, [lang, supported]);
 
-
+  useEffect(() => {
+    localStorage.setItem("OR_KEY", apiKey);
+  }, [apiKey]);
   const handleAISmartNotes = async () => {
-    if (!finalText.trim()) {
-      setStatus("متنی وجود ندارد.");
+    if (!apiKey) {
+      setStatus("OpenRouter API Key رو وارد کن.");
       return;
     }
   
-    try {
-      setAiLoading(true);
-      setStatus("AI در حال ساخت جزوه...");
+    setAiLoading(true);
+    setStatus("AI در حال ساخت جزوه...");
   
+    try {
       const result = await enhanceToNotes(
         finalText,
-        lang.startsWith("fa") ? "fa" : "en"
+        lang.startsWith("fa") ? "fa" : "en",
+        apiKey
       );
   
       setFinalText(result);
-      setInterimText("");
       setStatus("جزوه آماده شد ✅");
     } catch (e) {
       setStatus("خطا در ارتباط با AI");
@@ -194,6 +198,16 @@ export default function App() {
           border: "1px solid rgba(255,255,255,0.12)"
         }}
       >
+        <input
+  value={apiKey}
+  onChange={(e) => setApiKey(e.target.value)}
+  placeholder="OpenRouter API Key"
+  style={{
+    padding: "8px",
+    borderRadius: 8,
+    marginRight: 8
+  }}
+/>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <button onClick={start} disabled={!supported || isListening} style={btnStyle(isListening ? 0.6 : 1)}>
             ▶️ Start
