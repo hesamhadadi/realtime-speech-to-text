@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { exportTextAsPdf } from "./utils/exportPdf";
-
+import { enhanceToNotes } from "./utils/aiNotes";
 type SpeechRecognitionType = typeof window extends { webkitSpeechRecognition: infer T }
   ? T
   : any;
@@ -17,7 +17,7 @@ function getRecognizerCtor(): SpeechRecognitionType | null {
 export default function App() {
   const supported = useMemo(() => isSpeechSupported(), []);
   const recognizerRef = useRef<any>(null);
-
+  const [aiLoading, setAiLoading] = useState(false);
   const [lang, setLang] = useState<"fa-IR" | "en-US">("fa-IR");
   const [isListening, setIsListening] = useState(false);
 
@@ -80,6 +80,31 @@ export default function App() {
     };
   }, [lang, supported]);
 
+
+  const handleAISmartNotes = async () => {
+    if (!finalText.trim()) {
+      setStatus("متنی وجود ندارد.");
+      return;
+    }
+  
+    try {
+      setAiLoading(true);
+      setStatus("AI در حال ساخت جزوه...");
+  
+      const result = await enhanceToNotes(
+        finalText,
+        lang.startsWith("fa") ? "fa" : "en"
+      );
+  
+      setFinalText(result);
+      setInterimText("");
+      setStatus("جزوه آماده شد ✅");
+    } catch (e) {
+      setStatus("خطا در ارتباط با AI");
+    } finally {
+      setAiLoading(false);
+    }
+  };
   const start = () => {
     const rec = recognizerRef.current;
     if (!rec) return;
@@ -177,7 +202,13 @@ export default function App() {
           <button onClick={stop} disabled={!supported || !isListening} style={btnStyle(!isListening ? 0.6 : 1)}>
             ⏹ Stop
           </button>
-
+          <button
+  onClick={handleAISmartNotes}
+  disabled={aiLoading}
+  style={btnStyle(aiLoading ? 0.6 : 1)}
+>
+  ✨ AI Smart Notes
+</button>
           <button onClick={copy} disabled={!supported} style={btnStyle(1)}>
             📋 Copy
           </button>
