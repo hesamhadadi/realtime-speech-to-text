@@ -198,7 +198,7 @@ export default function App() {
           border: "1px solid rgba(255,255,255,0.12)"
         }}
       >
-        <input
+        {/* <input
   value={apiKey}
   onChange={(e) => setApiKey(e.target.value)}
   placeholder="OpenRouter API Key"
@@ -207,7 +207,7 @@ export default function App() {
     borderRadius: 8,
     marginRight: 8
   }}
-/>
+/> */}
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <button onClick={start} disabled={!supported || isListening} style={btnStyle(isListening ? 0.6 : 1)}>
             ▶️ Start
@@ -216,13 +216,7 @@ export default function App() {
           <button onClick={stop} disabled={!supported || !isListening} style={btnStyle(!isListening ? 0.6 : 1)}>
             ⏹ Stop
           </button>
-          <button
-  onClick={handleAISmartNotes}
-  disabled={aiLoading}
-  style={btnStyle(aiLoading ? 0.6 : 1)}
->
-  ✨ AI Smart Notes
-</button>
+     
           <button onClick={copy} disabled={!supported} style={btnStyle(1)}>
             📋 Copy
           </button>
