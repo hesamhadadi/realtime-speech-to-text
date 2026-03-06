@@ -1,20 +1,16 @@
-# Realtime Speech to Text
+# realtime-speech
 
-A lightweight realtime speech recognition tool that converts Persian and English speech into text directly in the browser.
+Realtime Speech-to-Text for Persian and English.
 
 ## Features
 
-- 🎤 Realtime speech recognition
-- 🌍 Supports Persian and English
-- ⚡ Fast browser-based processing
-- 🧠 Simple API for developers
+- realtime speech recognition
+- Persian (fa-IR)
+- English (en-US)
+- simple API
+- TypeScript support
 
-## Demo
-
-Live demo:
-https://hesamhadadi.github.io/realtime-speech-to-text/
-
-## Installation
+## Install
 
 ```bash
-npm install realtime-speech-to-text
+npm install @hesamhadadi/realtime-speech

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Speech Demo</title>
+</head>
+
+<body>
+
+<button id="start">Start</button>
+
+<p id="output"></p>
+
+<script type="module">
+
+import { startListening } from "../src/index.ts"
+
+document.getElementById("start").onclick = () => {
+
+  startListening({
+    lang: "fa-IR",
+    onResult: (text) => {
+      document.getElementById("output").innerText += text + " "
+    }
+  })
+
+}
+
+</script>
+
+</body>
+</html>
