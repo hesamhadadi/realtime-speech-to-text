@@ -14,3 +14,4 @@ Realtime Speech-to-Text for Persian and English.
 
 ```bash
 npm install @hesamhadadi/realtime-speech
+<!-- quickdraw badge test -->
