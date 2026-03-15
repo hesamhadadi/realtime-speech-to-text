@@ -1,0 +1,65 @@
+{
+  "name": "persian-realtime-speech",
+  "version": "2.0.0",
+  "description": "Real-time speech-to-text for Persian, English, Italian and more — TypeScript, zero dependencies",
+  "keywords": [
+    "speech-to-text",
+    "speech-recognition",
+    "persian",
+    "farsi",
+    "realtime",
+    "typescript",
+    "web-speech-api",
+    "voice",
+    "react",
+    "italian",
+    "multilingual"
+  ],
+  "author": "hesamhadadi",
+  "license": "MIT",
+  "homepage": "https://hesamhadadi.github.io/realtime-speech-to-text",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hesamhadadi/realtime-speech-to-text.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hesamhadadi/realtime-speech-to-text/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build:app": "tsc -b && vite build",
+    "build:lib": "tsup src/index.ts --format esm,cjs --dts --clean --out-dir dist",
+    "build": "npm run build:lib",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}
